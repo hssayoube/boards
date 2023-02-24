@@ -13,8 +13,8 @@
     <thead class="table-dark">
       <tr>
         <th>Board</th>
-        <th>Posts</th>
-        <th>Topics</th>
+        <th class="text-center">Posts</th>
+        <th class="text-center">Topics</th>
         <th>Last Post</th>
       </tr>
     </thead>
@@ -22,20 +22,20 @@
       {% for board in boards %}
         <tr>
           <td>
-            <a class="text-decoration-none" href="{% url 'topics' board.id %}">{{ board.name }}</a>
+            <a class="text-decoration-none fw-bold" href="{% url 'topics' board.id %}">{{ board.name }}</a>
             <small class="text-muted d-block">{{ board.description }}</small>
           </td>
-          <td class="align-middle">
+          <td class="align-middle text-center">
             {{ board.get_posts_count }}
           </td>
-          <td class="align-middle">
+          <td class="align-middle text-center">
             {{ board.topics.count }}
           </td>
           <td class="align-middle">
             {% with post=board.get_last_post %}
               {% if post %}
                 <small>
-                  <a href="{% url 'post_topic' board.id post.topic.id %}">
+                  <a class="text-decoration-none" href="{% url 'post_topic' board.id post.topic.id %}">
                     By {{ post.created_by.username }} at {{ post.created_at }}
                   </a>
                 </small>

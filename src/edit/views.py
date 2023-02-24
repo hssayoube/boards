@@ -4,12 +4,13 @@ from boards.models import Post
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from reply.forms import PostForm
 
 # Create your views here.
 @method_decorator(login_required, name='dispatch')
 class PostUpdateView(UpdateView):
+    form_class = PostForm
     model = Post
-    fields = ('message', )
     template_name = 'edit.html'
     pk_url_kwarg = 'post_id'
     context_object_name = 'post'

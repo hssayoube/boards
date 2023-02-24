@@ -28,7 +28,7 @@
         <tbody>
             {% for topic in topics %}
                 <tr>
-                    <td><a href="{% url 'post_topic' board.id topic.id %}">{{ topic.subject }}</a></td>
+                    <td><a class="text-decoration-none fw-bold" href="{% url 'post_topic' board.id topic.id %}">{{ topic.subject }}</a></td>
                     <td>{{ topic.starter.username }}</td>
                     <td>{{ topic.replies }}</td>
                     <td>{{ topic.views }}</td>

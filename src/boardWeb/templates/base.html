@@ -9,7 +9,11 @@
         {% block title %}
         {% endblock %}
     </title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+    <style>
+        .tox-notifications-container, .tox-statusbar__branding {
+          display: none;
+        }
+    </style>
     {% load bootstrap5 %}
     {% bootstrap_css %}
     {% bootstrap_javascript %}
@@ -33,7 +37,7 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-dark" aria-label="userMenu">
                                     <li><a class="dropdown-item" href="{% url 'profile' %}">My Account</a></li>
-                                    <li><a class="dropdown-item" href="/change_password">Change password</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'change_password' %}">Change password</a></li>
                                     <li><a class="dropdown-item" href="{% url 'logout' %}">Log out</a></li>
                                 </ul>
                             </li>
@@ -57,7 +61,7 @@
         </div>
     {% endblock %}
 
-    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 
     {% block javascript %}
     {% endblock %}

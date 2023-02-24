@@ -8,7 +8,7 @@ class post_topic(ListView):
     model = Post
     context_object_name = 'posts'
     template_name = 'post_topic.html'
-    paginate_by = 2
+    paginate_by = 3
 
     def get_context_data(self, **kwargs):
         session_key = 'viewed_topic_{}'.format(self.topic.id)

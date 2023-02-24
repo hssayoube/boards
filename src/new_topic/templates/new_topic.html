@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% load widget_tweaks %}
 
 {% block title %}Start a New Topic{% endblock %}
@@ -16,4 +18,13 @@
   {% include 'form.html' %}
   <button type="submit" class="btn btn-success">Post</button>
 </form>
+{% endblock %}
+
+
+{% block javascript %}
+  <script>
+      tinymce.init({
+        selector: '#editor'
+      });
+    </script>
 {% endblock %}

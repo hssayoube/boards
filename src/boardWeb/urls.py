@@ -27,4 +27,5 @@ urlpatterns = [
     path('reset/', include('password_reset.urls')),
     path('change_password/', include('change_password.urls')),
     path('profile/', include('account_profile.urls')),
+    path('tinymce/', include('tinymce.urls')),
 ]
