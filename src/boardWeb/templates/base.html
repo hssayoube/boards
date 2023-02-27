@@ -36,7 +36,9 @@
                                     {{ user.username }}
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-dark" aria-label="userMenu">
-                                    <li><a class="dropdown-item" href="{% url 'profile' %}">My Account</a></li>
+                                    {% if not request.user.is_superuser %}
+                                        <li><a class="dropdown-item" href="{% url 'profile' %}">My Account</a></li>
+                                    {% endif %}
                                     <li><a class="dropdown-item" href="{% url 'change_password' %}">Change password</a></li>
                                     <li><a class="dropdown-item" href="{% url 'logout' %}">Log out</a></li>
                                 </ul>

@@ -9,10 +9,29 @@
 {% block content %}
   <div class="row">
     <div class="col-lg-6 col-md-8 col-sm-10">
-      <form method="post" novalidate>
+      <form method="post" enctype="multipart/form-data" class="card" novalidate>
         {% csrf_token %}
-        {% include 'form.html' %}
-        <button type="submit" class="btn btn-success mt-2">Save changes</button>
+        {% if form.non_field_errors %}
+          <div class="alert alert-danger" role="alert">
+            {% for error in form.non_field_errors %}
+              <p{% if forloop.last %} class="mb-0"{% endif %}>{{ error }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+        {% if user.profile %}
+          <img src="{{ user.profile.profile_pic.url }}" style="height: 100px; width: 100px;" alt="{{ user.username }}" class="rounded-circle mx-auto d-block"  accept=".jpg, .jpeg, .png"/>
+	      {% endif %}
+        <h2 class="text-center">{{ user.username | title }}</h2>
+        <p class="text-center"><a href="mailto:{{user.email}}">{{ user.email }}</a></p>
+        <hr>
+        <label for="email">Email Address:</label>
+        <input type="email" id="email" name="email" value="{{ user.email }}" />
+
+        <label for="profile_pic">Image:</label>
+        <input type="file" name="profile_pic" id="profile_pic">
+
+        
+        <button type="submit" class="btn btn-success full-width mt-2">Save changes</button>
       </form>
     </div>
   </div>
