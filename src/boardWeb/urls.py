@@ -30,6 +30,7 @@ urlpatterns = [
     path('change_password/', include('change_password.urls')),
     path('profile/', include('account_profile.urls')),
     path('tinymce/', include('tinymce.urls')),
+    path('edit_image/', include('edit_image.urls')),
 ]
 
 if settings.DEBUG:

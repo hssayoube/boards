@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Image Editor
+{% endblock %}
+
+{% block stylesheet %}
+    <style>
+        body{
+            background-color: rgb(220, 225, 225);
+        }
+
+        label.dropdown-toggle::after{
+            content: none;
+        }
+        .btn{
+            width: fit-content;
+            height: fit-content;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container mb-4">
+    <div class="shadow-lg p-2 rounded-3" style="background-color: rgb(253, 247, 247); height: fit-content; min-height: 500px;">
+        <div class="d-flex justify-content-center">
+            <input type="file" id="upload-image" style="display:none" accept="Image/*">
+            <div class="btn-group">
+                <label class="btn btn-secondary dropdown-toggle mb-2" data-bs-toggle="dropdown" aria-expanded="false">Choose an Image <i class="bi bi-file-earmark-plus"></i></label>
+                <ul class="dropdown-menu dropdown-menu-dark">
+                    <li><label for="upload-image" class="dropdown-item d-flex justify-content-between">Upload <i class="bi bi-file-earmark"></i></label></li>
+                    <li><label id="externalLink" class="dropdown-item d-flex justify-content-between">URL <i class="bi bi-link-45deg"></i></label></li>
+                </ul>
+            </div>
+        </div>
+        <div id="editor" class="mx-auto" style="min-width: 100%; height: 600px;"></div>
+    </div>
+</div>
+    
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        let externalLink = document.querySelector('#externalLink');
+        let upload_image = document.querySelector('#upload-image');
+        
+        externalLink.onclick = () => {
+            file = prompt('Enter image URL');
+            if(file !== null) {
+                try{
+                    new URL(file);
+                    ImageEditor(file);
+                }catch(err){
+                    alert(err.message);
+                }
+            }
+        }
+
+        upload_image.onchange = () => {
+            const image = new Image;
+            file = upload_image.files[0];
+            if(!file) return;
+            image.src = URL.createObjectURL(file);
+            ImageEditor(image.src);
+
+        }
+        const ImageEditor = (ImageSource) => {
+            const { TABS, TOOLS } = window.FilerobotImageEditor;
+
+            const config = {
+                source: ImageSource,
+                onSave: (editedImageObject, designState) =>{
+                    // console.log('saved', editedImageObject, designState);
+                    let link = document.createElement('a');
+                    download_path = editedImageObject.fullName;
+                    link.download = download_path;
+                    link.href = editedImageObject.imageBase64;
+                    link.click();
+                },
+                annotationsCommon: {
+                    fill: '#ff0000',
+                },
+                Text: { text: 'Double click to edit ...' },
+                Rotate: { angle: 90, componentType: 'slider' },
+                translations: {
+                    profile: 'Profile',
+                    coverPhoto: 'Cover photo',
+                    facebook: 'Facebook',
+                    socialMedia: 'Social Media',
+                    fbProfileSize: '180x180px',
+                    fbCoverPhotoSize: '820x312px',
+                },
+                Crop: {
+                    presetsItems: [
+                    {
+                        titleKey: 'classicTv',
+                        descriptionKey: '4:3',
+                        ratio: 4 / 3,
+                    },
+                    {
+                        titleKey: 'cinemascope',
+                        descriptionKey: '21:9',
+                        ratio: 21 / 9,
+                    },
+                    ],
+                    presetsFolders: [
+                    {
+                        titleKey: 'socialMedia', 
+                        groups: [
+                        {
+                            titleKey: 'facebook',
+                            items: [
+                            {
+                                titleKey: 'profile',
+                                width: 180,
+                                height: 180,
+                                descriptionKey: 'fbProfileSize',
+                            },
+                            {
+                                titleKey: 'coverPhoto',
+                                width: 820,
+                                height: 312,
+                                descriptionKey: 'fbCoverPhotoSize',
+                            },
+                            ],
+                        },
+                        ],
+                    },
+                    ],
+                },
+                theme: {
+                    palette:{
+                        'bg-primary': '#ffffff',
+                        'bg-primary-hover': '#6c757d',
+                        'bg-primary-active': '#495057',
+                        'icons-primary':'#000000',
+                        'accent-primary':'#6c757d',
+                        'accent-primary-hover':'#495057',
+                        'accent-primary-active':'#000000',
+                        'btn-primary-text':'#ffffff',
+                    },
+                    typography:{
+                        fontSize: '16px',
+                    }
+                },
+                tabsIds: [
+                    TABS.ADJUST, 
+                    TABS.ANNOTATE, 
+                    TABS.WATERMARK, 
+                    TABS.FINETUNE,
+                    TABS.FILTERS,
+                    TABS.RESIZE,
+                ],
+                defaultTabId: TABS.ADJUST, 
+                defaultToolId: TOOLS.CROP, 
+            };
+
+            const filerobotImageEditor = new FilerobotImageEditor(
+            document.querySelector('#editor'),
+            config,
+            );
+
+            filerobotImageEditor.render({
+            onClose: (closingReason) => {
+                console.log('Closing reason', closingReason);
+                filerobotImageEditor.terminate();
+            },
+            });
+        }
+    </script>
+    <script src="https://scaleflex.cloudimg.io/v7/plugins/filerobot-image-editor/latest/filerobot-image-editor.min.js"></script>
+{% endblock %}
